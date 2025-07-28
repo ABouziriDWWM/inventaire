@@ -4,7 +4,7 @@ Une application web responsive pour gérer votre inventaire de courses avec des 
 
 ## URL de déploiement
 
-L'application est déployée et accessible à l'adresse : https://xagidase.manus.space
+L'application est déployée et accessible à l'adresse : https://inventaireb.netlify.app/
 
 ## Fonctionnalités
 
@@ -81,6 +81,3 @@ Compatible avec tous les navigateurs modernes supportant :
 - CSS Grid et Flexbox
 - Fetch API
 
-## URL de déploiement
-
-L'application est déployée et accessible à l'adresse : https://xagidase.manus.space
