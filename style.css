@@ -797,13 +797,6 @@ section h2 {
   }
 }
 
-/* Styles pour le bouton de bascule mobile */
-.mobile-toggle-container {
-  display: none;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
 .mobile-toggle-btn {
   background: var(--secondary-color);
   color: white;
@@ -840,11 +833,6 @@ section h2 {
 @media (max-width: 768px) {
   .mobile-toggle-container {
     display: block !important;
-  }
-
-  /* Par défaut, masquer toutes les sections sur mobile */
-  .collapsible-section {
-    display: none !important;
   }
 
   /* Afficher les sections quand elles sont actives */

@@ -822,38 +822,6 @@ class MobileToggleManager {
     }
   }
 
-  setup() {
-    this.toggleBtn = document.getElementById("mobile-toggle-btn");
-    this.sections = document.querySelectorAll(".collapsible-section");
-
-    if (this.toggleBtn) {
-      this.toggleBtn.addEventListener("click", () => this.toggleSections());
-    }
-
-    // Initialiser l'état sur mobile
-    this.initializeMobileState();
-
-    // Écouter les changements de taille d'écran
-    window.addEventListener("resize", () => this.handleResize());
-  }
-
-  initializeMobileState() {
-    if (this.isMobile()) {
-      // Sur mobile, masquer toutes les sections par défaut
-      this.sections.forEach((section) => {
-        section.classList.remove("active");
-      });
-      this.isVisible = false;
-      this.updateButtonState();
-    } else {
-      // Sur desktop, afficher toutes les sections
-      this.sections.forEach((section) => {
-        section.classList.add("active");
-      });
-      this.isVisible = true;
-    }
-  }
-
   toggleSections() {
     this.isVisible = !this.isVisible;
 
