@@ -1023,102 +1023,130 @@ window.mobileToggleManager = mobileToggleManager;
 // @@
 // bouttons d'affichage pour mobile
 
-// ...existing code...
-
 function isMobile() {
   return window.matchMedia("(max-width: 768px)").matches;
 }
 
-// ...existing code...
+// Replace the existing addToggleButtons and resize event listener with this improved version:
 
-// ...existing code...
-
+let resizeTimeout;
 function addToggleButtons() {
-  // Pour chaque day-card
-  document.querySelectorAll(".day-card").forEach((card) => {
-    // Retire les anciens boutons pour éviter les doublons
-    card.querySelectorAll(".mobile-toggle-btn").forEach((btn) => btn.remove());
-
-    if (isMobile()) {
-      // Trouve le nom du jour (supposé dans un élément avec la classe .day-title)
-      let dayName = "";
-      const titleEl = card.querySelector(".day-title");
-      if (titleEl) {
-        dayName = titleEl.textContent.trim();
-      } else {
-        // Si pas de .day-title, essaye de trouver le premier h3 ou h4
-        const h = card.querySelector("h3,h4");
-        dayName = h ? h.textContent.trim() : "";
-      }
-
-      // Trouve le contenu à masquer (tout sauf le bouton)
-      const content = Array.from(card.children).filter(
-        (el) => !el.classList.contains("mobile-toggle-btn")
-      );
-      // Crée le bouton avec le nom du jour
-      const btn = document.createElement("button");
-      btn.className = "mobile-toggle-btn";
-      btn.type = "button";
-      btn.innerHTML = `<i class="fas fa-chevron-down"></i> <span>Afficher ${dayName}</span>`;
-      btn.style.marginBottom = "10px";
-      card.insertBefore(btn, card.firstChild);
-
-      // Masque le contenu par défaut
-      content.forEach((el) => (el.style.display = "none"));
-
-      btn.addEventListener("click", () => {
-        const isActive = btn.classList.toggle("active");
-        content.forEach((el) => (el.style.display = isActive ? "" : "none"));
-        btn.querySelector("span").textContent = isActive
-          ? `Masquer ${dayName}`
-          : `Afficher ${dayName}`;
-        btn.querySelector("i").className = isActive
-          ? "fas fa-chevron-up"
-          : "fas fa-chevron-down";
-      });
-    } else {
-      // Sur desktop, tout est visible
-      Array.from(card.children).forEach((el) => (el.style.display = ""));
-    }
+  // Clean up existing buttons and events first
+  document.querySelectorAll(".mobile-toggle-btn").forEach((btn) => {
+    btn.removeEventListener("click", handleToggleClick);
+    btn.remove();
   });
 
-  // Pour chaque recipe-card
-  document.querySelectorAll(".recipe-card").forEach((card) => {
-    // Retire les anciens boutons pour éviter les doublons
-    card.querySelectorAll(".mobile-toggle-btn").forEach((btn) => btn.remove());
+  if (isMobile()) {
+    // For each day-card
+    document.querySelectorAll(".day-card").forEach((card) => {
+      setupToggleButton(card, getDayName(card));
+    });
 
-    const body = card.querySelector(".recipe-body");
-    if (body) {
-      if (isMobile()) {
-        const btn = document.createElement("button");
-        btn.className = "mobile-toggle-btn";
-        btn.type = "button";
-        btn.innerHTML =
-          '<i class="fas fa-chevron-down"></i> <span>Afficher</span>';
-        btn.style.marginBottom = "10px";
-        card.insertBefore(btn, body);
-
-        body.style.display = "none";
-
-        btn.addEventListener("click", () => {
-          const isActive = btn.classList.toggle("active");
-          body.style.display = isActive ? "" : "none";
-          btn.querySelector("span").textContent = isActive
-            ? "Masquer"
-            : "Afficher";
-          btn.querySelector("i").className = isActive
-            ? "fas fa-chevron-up"
-            : "fas fa-chevron-down";
-        });
-      } else {
-        body.style.display = "";
+    // For each recipe-card
+    document.querySelectorAll(".recipe-card").forEach((card) => {
+      const body = card.querySelector(".recipe-body");
+      if (body) {
+        setupRecipeToggleButton(card, body);
       }
-    }
-  });
+    });
+  } else {
+    // On desktop, ensure all content is visible
+    document.querySelectorAll(".day-card, .recipe-body").forEach((el) => {
+      el.style.display = "";
+      el.classList.add("active");
+    });
+  }
 }
-// ...existing code...
 
-// ...existing
+function handleToggleClick(event) {
+  const btn = event.currentTarget;
+  const isActive = btn.classList.toggle("active");
+
+  // Handle day-card toggle
+  if (btn.closest(".day-card")) {
+    const content = Array.from(btn.closest(".day-card").children).filter(
+      (el) => !el.classList.contains("mobile-toggle-btn")
+    );
+    content.forEach((el) => (el.style.display = isActive ? "" : "none"));
+
+    // Update button text and icon
+    const dayName = btn
+      .querySelector("span")
+      .textContent.replace(/^(Afficher|Masquer) /, "");
+    btn.querySelector("span").textContent = isActive
+      ? `Masquer ${dayName}`
+      : `Afficher ${dayName}`;
+  }
+
+  // Handle recipe-card toggle
+  if (btn.closest(".recipe-card")) {
+    const body = btn.closest(".recipe-card").querySelector(".recipe-body");
+    if (body) {
+      body.style.display = isActive ? "" : "none";
+    }
+    btn.querySelector("span").textContent = isActive ? "Masquer" : "Afficher";
+  }
+
+  // Update icon
+  btn.querySelector("i").className = isActive
+    ? "fas fa-chevron-up"
+    : "fas fa-chevron-down";
+}
+
+function getDayName(card) {
+  const titleEl = card.querySelector(".day-title");
+  if (titleEl) return titleEl.textContent.trim();
+
+  const h = card.querySelector("h3,h4");
+  return h ? h.textContent.trim() : "";
+}
+
+function setupToggleButton(card, name) {
+  const btn = document.createElement("button");
+  btn.className = "mobile-toggle-btn";
+  btn.type = "button";
+  btn.innerHTML = `<i class="fas fa-chevron-down"></i> <span>Afficher ${name}</span>`;
+  btn.style.marginBottom = "10px";
+
+  card.insertBefore(btn, card.firstChild);
+
+  // Hide content initially
+  const content = Array.from(card.children).filter(
+    (el) => !el.classList.contains("mobile-toggle-btn")
+  );
+  content.forEach((el) => (el.style.display = "none"));
+
+  btn.addEventListener("click", handleToggleClick);
+}
+
+function setupRecipeToggleButton(card, body) {
+  const btn = document.createElement("button");
+  btn.className = "mobile-toggle-btn";
+  btn.type = "button";
+  btn.innerHTML = '<i class="fas fa-chevron-down"></i> <span>Afficher</span>';
+  btn.style.marginBottom = "10px";
+
+  card.insertBefore(btn, body);
+  body.style.display = "none";
+
+  btn.addEventListener("click", handleToggleClick);
+}
+
+// Improved resize handler with debouncing
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    addToggleButtons();
+  }, 250);
+});
+
+// Initialize buttons after DOM is ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", addToggleButtons);
+} else {
+  addToggleButtons();
+}
 
 // Ajoute les boutons au chargement et au resize
 window.addEventListener("DOMContentLoaded", addToggleButtons);
@@ -1135,5 +1163,3 @@ window.addEventListener("resize", () => {
     addToggleButtons();
   }
 });
-
-// ...existing code...
