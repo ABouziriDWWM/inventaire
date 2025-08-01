@@ -796,3 +796,150 @@ section h2 {
     background: #ffe6e6 !important;
   }
 }
+
+
+/* Styles pour le bouton de bascule mobile */
+.mobile-toggle-container {
+  display: none;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.mobile-toggle-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow);
+}
+
+.mobile-toggle-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.mobile-toggle-btn i {
+  font-size: 1.1rem;
+}
+
+/* Styles pour les sections collapsibles */
+.collapsible-section {
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+/* Responsive - Afficher le bouton sur mobile */
+@media (max-width: 768px) {
+  .mobile-toggle-container {
+    display: block !important;
+  }
+  
+  /* Par défaut, masquer toutes les sections sur mobile */
+  .collapsible-section {
+    display: none !important;
+  }
+  
+  /* Afficher les sections quand elles sont actives */
+  .collapsible-section.active {
+    display: block !important;
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  /* Animation de glissement vers le bas */
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Améliorer l'espacement sur mobile */
+  .main-content {
+    gap: 15px;
+  }
+  
+  /* Style spécial pour le bouton actif */
+  .mobile-toggle-btn.active {
+    background: var(--success-color);
+  }
+  
+  .mobile-toggle-btn.active i {
+    transform: rotate(180deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-toggle-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+  }
+  
+  .mobile-toggle-btn span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Indicateur visuel pour les sections masquées */
+.section-indicator {
+  display: none;
+  text-align: center;
+  padding: 10px;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px dashed var(--primary-color);
+  border-radius: var(--border-radius);
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .section-indicator {
+    display: block;
+  }
+}
+
+/* Amélioration de l'accessibilité */
+.mobile-toggle-btn:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Animation du bouton lors du clic */
+.mobile-toggle-btn:active {
+  transform: scale(0.98);
+}
+
+/* Style pour les sections en mode compact */
+@media (max-width: 768px) {
+  .collapsible-section.active {
+    margin-bottom: 15px;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius-lg);
+  }
+  
+  .collapsible-section.active h2 {
+    background: var(--primary-color);
+    color: white;
+    margin: -30px -30px 20px -30px;
+    padding: 15px 30px;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  }
+}
+
