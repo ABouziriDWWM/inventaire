@@ -823,6 +823,28 @@ section h2 {
   font-size: 1.1rem;
 }
 
+.mobile-toggle-btn {
+  display: none;
+  margin-bottom: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Section visibility states */
+section {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mobile-toggle-btn {
+    display: flex;
+  }
+
+  section:not(.active) {
+    display: none;
+  }
+}
+
 /* Styles pour les sections collapsibles */
 .collapsible-section {
   transition: var(--transition);

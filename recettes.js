@@ -822,23 +822,33 @@ class MobileToggleManager {
     }
   }
 
+  setup() {
+    this.sections = document.querySelectorAll("section");
+    this.createToggleButton();
+    this.handleResize();
+    window.addEventListener("resize", () => this.handleResize());
+  }
+  createToggleButton() {
+    this.toggleBtn = document.createElement("button");
+    this.toggleBtn.className = "mobile-toggle-btn";
+    this.toggleBtn.innerHTML = `
+            <i class="fas fa-eye"></i>
+            <span>Afficher les sections</span>
+        `;
+    this.toggleBtn.addEventListener("click", () => this.toggleSections());
+
+    const container = document.querySelector(".main-content");
+    if (container) {
+      container.insertBefore(this.toggleBtn, container.firstChild);
+    }
+  }
+
   toggleSections() {
     this.isVisible = !this.isVisible;
-
-    this.sections.forEach((section, index) => {
-      if (this.isVisible) {
-        // Afficher avec un délai progressif pour un effet en cascade
-        setTimeout(() => {
-          section.classList.add("active");
-        }, index * 100);
-      } else {
-        // Masquer immédiatement
-        section.classList.remove("active");
-      }
+    this.sections.forEach((section) => {
+      section.classList.toggle("active", this.isVisible);
     });
-
     this.updateButtonState();
-    this.showToggleNotification();
   }
 
   updateButtonState() {
@@ -848,11 +858,9 @@ class MobileToggleManager {
     const text = this.toggleBtn.querySelector("span");
 
     if (this.isVisible) {
-      this.toggleBtn.classList.add("active");
       icon.className = "fas fa-eye-slash";
       text.textContent = "Masquer les sections";
     } else {
-      this.toggleBtn.classList.remove("active");
       icon.className = "fas fa-eye";
       text.textContent = "Afficher les sections";
     }
@@ -902,17 +910,14 @@ class MobileToggleManager {
   }
 
   handleResize() {
-    // Réinitialiser l'état lors du changement de taille d'écran
-    if (!this.isMobile()) {
-      // Sur desktop, toujours afficher les sections
-      this.sections.forEach((section) => {
-        section.classList.add("active");
-      });
+    const mobile = isMobile();
+    this.toggleBtn.style.display = "flex";
+
+    if (!mobile) {
       this.isVisible = true;
-    } else {
-      // Sur mobile, maintenir l'état actuel
-      this.updateButtonState();
+      this.sections.forEach((section) => section.classList.add("active"));
     }
+    this.updateButtonState();
   }
 
   isMobile() {
@@ -1131,3 +1136,7 @@ window.addEventListener("resize", () => {
     addToggleButtons();
   }
 });
+
+// Initialize mobile toggle manager
+const mobileToggleManager1 = new MobileToggleManager();
+window.mobileToggleManager = mobileToggleManager1;
