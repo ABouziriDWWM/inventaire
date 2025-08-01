@@ -1040,16 +1040,26 @@ function addToggleButtons() {
     card.querySelectorAll(".mobile-toggle-btn").forEach((btn) => btn.remove());
 
     if (isMobile()) {
+      // Trouve le nom du jour (supposé dans un élément avec la classe .day-title)
+      let dayName = "";
+      const titleEl = card.querySelector(".day-title");
+      if (titleEl) {
+        dayName = titleEl.textContent.trim();
+      } else {
+        // Si pas de .day-title, essaye de trouver le premier h3 ou h4
+        const h = card.querySelector("h3,h4");
+        dayName = h ? h.textContent.trim() : "";
+      }
+
       // Trouve le contenu à masquer (tout sauf le bouton)
       const content = Array.from(card.children).filter(
         (el) => !el.classList.contains("mobile-toggle-btn")
       );
-      // Crée le bouton
+      // Crée le bouton avec le nom du jour
       const btn = document.createElement("button");
       btn.className = "mobile-toggle-btn";
       btn.type = "button";
-      btn.innerHTML =
-        '<i class="fas fa-chevron-down"></i> <span>Afficher</span>';
+      btn.innerHTML = `<i class="fas fa-chevron-down"></i> <span>Afficher ${dayName}</span>`;
       btn.style.marginBottom = "10px";
       card.insertBefore(btn, card.firstChild);
 
@@ -1060,8 +1070,8 @@ function addToggleButtons() {
         const isActive = btn.classList.toggle("active");
         content.forEach((el) => (el.style.display = isActive ? "" : "none"));
         btn.querySelector("span").textContent = isActive
-          ? "Masquer"
-          : "Afficher";
+          ? `Masquer ${dayName}`
+          : `Afficher ${dayName}`;
         btn.querySelector("i").className = isActive
           ? "fas fa-chevron-up"
           : "fas fa-chevron-down";
@@ -1106,7 +1116,6 @@ function addToggleButtons() {
     }
   });
 }
-
 // ...existing code...
 
 // ...existing
