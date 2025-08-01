@@ -2,7 +2,7 @@
 :root {
   --primary-color: #2563eb;
   --primary-hover: #1d4ed8;
-  --secondary-color: #64748b;
+  --secondary-color: #67c0b9;
   --success-color: #059669;
   --warning-color: #d97706;
   --danger-color: #dc2626;
@@ -797,7 +797,6 @@ section h2 {
   }
 }
 
-
 /* Styles pour le bouton de bascule mobile */
 .mobile-toggle-container {
   display: none;
@@ -806,7 +805,7 @@ section h2 {
 }
 
 .mobile-toggle-btn {
-  background: var(--primary-color);
+  background: var(--secondary-color);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -842,18 +841,18 @@ section h2 {
   .mobile-toggle-container {
     display: block !important;
   }
-  
+
   /* Par défaut, masquer toutes les sections sur mobile */
   .collapsible-section {
     display: none !important;
   }
-  
+
   /* Afficher les sections quand elles sont actives */
   .collapsible-section.active {
     display: block !important;
     animation: slideDown 0.3s ease-out;
   }
-  
+
   /* Animation de glissement vers le bas */
   @keyframes slideDown {
     from {
@@ -865,17 +864,17 @@ section h2 {
       transform: translateY(0);
     }
   }
-  
+
   /* Améliorer l'espacement sur mobile */
   .main-content {
     gap: 15px;
   }
-  
+
   /* Style spécial pour le bouton actif */
   .mobile-toggle-btn.active {
     background: var(--success-color);
   }
-  
+
   .mobile-toggle-btn.active i {
     transform: rotate(180deg);
   }
@@ -888,7 +887,7 @@ section h2 {
     padding: 15px 20px;
     font-size: 1.1rem;
   }
-  
+
   .mobile-toggle-btn span {
     display: block;
     margin-top: 4px;
@@ -917,12 +916,13 @@ section h2 {
 
 /* Amélioration de l'accessibilité */
 .mobile-toggle-btn:focus {
-  outline: 2px solid var(--primary-color);
+  outline: 2px solid var(--secondary-color);
   outline-offset: 2px;
 }
 
 /* Animation du bouton lors du clic */
 .mobile-toggle-btn:active {
+  background: var(--secondary-color);
   transform: scale(0.98);
 }
 
@@ -933,7 +933,7 @@ section h2 {
     border: 2px solid var(--primary-color);
     border-radius: var(--border-radius-lg);
   }
-  
+
   .collapsible-section.active h2 {
     background: var(--primary-color);
     color: white;
@@ -942,4 +942,3 @@ section h2 {
     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
   }
 }
-
